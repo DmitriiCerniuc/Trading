@@ -5,87 +5,104 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Risk Management</title>
 <style>
+:root{
+  --fg:#ededed;--dim:#9a9a9a;--faint:#6f6f6f;
+  --panel:rgba(255,255,255,.04);--line:rgba(255,255,255,.09);
+  --input:rgba(255,255,255,.055);--chip:rgba(255,255,255,.07);
+  --accent:#e0a458;--blue:#60a5fa;--green:#4ade80;--red:#f87171;--purple:#c084fc;
+  --btnfg:#191308;
+}
+@media (prefers-color-scheme:light){
+  :root{--fg:#1f1f1f;--dim:#5a5a5a;--faint:#7d7d7d;
+    --panel:rgba(0,0,0,.03);--line:rgba(0,0,0,.1);--input:rgba(0,0,0,.045);--chip:rgba(0,0,0,.06);
+    --accent:#b8791f;--blue:#2563eb;--green:#15803d;--red:#dc2626;--purple:#7c3aed}
+}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#0d0d0d;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;padding:16px}
-h1{font-size:20px;font-weight:700;letter-spacing:-.02em}
-.sub{font-size:12px;color:#7a7a7a;margin:3px 0 16px}
-.panel{background:#141414;border:1px solid #242424;border-radius:14px;padding:14px}
-.tabs{display:flex;background:#1c1c1c;border-radius:10px;padding:3px;margin-bottom:14px}
-.tab{flex:1;text-align:center;padding:8px;font-size:12.5px;color:#8a8a8a;border-radius:8px;cursor:pointer;user-select:none;font-weight:500}
-.tab.on{background:#2c2c2c;color:#fff}
-.sec{font-size:9.5px;letter-spacing:.13em;color:#6a6a6a;margin:14px 0 8px;font-weight:600}
-.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
-label{display:block;font-size:11px;color:#9a9a9a;margin-bottom:5px}
+html,body{background:transparent}
+body{color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;padding:2px}
+.hd{display:flex;align-items:baseline;gap:8px;margin-bottom:9px;flex-wrap:wrap}
+h1{font-size:15px;font-weight:700;letter-spacing:-.01em}
+.sub{font-size:10.5px;color:var(--faint)}
+.tabs{display:flex;background:var(--chip);border-radius:8px;padding:2px;margin-bottom:10px}
+.tab{flex:1;text-align:center;padding:6px;font-size:11.5px;color:var(--dim);border-radius:6px;cursor:pointer;user-select:none;font-weight:500}
+.tab.on{background:var(--input);color:var(--fg);font-weight:600}
+.sec{font-size:8.5px;letter-spacing:.14em;color:var(--faint);margin:9px 0 6px;font-weight:600}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:7px}
+label{display:block;font-size:10px;color:var(--dim);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .inwrap{position:relative}
-input{width:100%;background:#1b1b1b;border:1px solid #2c2c2c;border-radius:9px;padding:10px 30px 10px 11px;color:#fff;font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;outline:none}
-input:focus{border-color:#e0a458}
-.unit{position:absolute;right:11px;top:50%;transform:translateY(-50%);color:#6a6a6a;font-size:12px}
-button{width:100%;margin-top:14px;background:#e0a458;color:#191308;border:0;border-radius:10px;padding:12px;font-size:14px;font-weight:700;cursor:pointer}
+input{width:100%;background:var(--input);border:1px solid var(--line);border-radius:7px;padding:7px 24px 7px 9px;color:var(--fg);font-size:13.5px;font-weight:600;font-variant-numeric:tabular-nums;outline:none}
+input:focus{border-color:var(--accent)}
+.unit{position:absolute;right:8px;top:50%;transform:translateY(-50%);color:var(--faint);font-size:11px}
+button{width:100%;margin-top:10px;background:var(--accent);color:var(--btnfg);border:0;border-radius:8px;padding:9px;font-size:12.5px;font-weight:700;cursor:pointer}
 button:active{opacity:.85}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:14px}
-.stat{background:#181818;border:1px solid #242424;border-radius:11px;padding:12px}
-.stat .k{font-size:9.5px;letter-spacing:.1em;color:#6a6a6a;font-weight:600}
-.stat .v{font-size:22px;font-weight:700;margin:5px 0 2px;font-variant-numeric:tabular-nums}
-.stat .h{font-size:10.5px;color:#6a6a6a}
-.blue{color:#60a5fa}.green{color:#4ade80}.red{color:#f87171}.amber{color:#e0a458}
-.bars{margin-top:14px}
-.brow{margin-bottom:11px}
-.bhead{display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:5px}
-.bhead .r{color:#9a9a9a;font-variant-numeric:tabular-nums}
-.track{height:5px;background:#232323;border-radius:4px;overflow:hidden}
-.fill{height:100%;border-radius:4px;width:0;transition:width .35s ease}
-.banner{margin-top:14px;border-radius:11px;padding:12px 14px;font-size:12.5px;line-height:1.5;display:flex;gap:9px;align-items:flex-start}
-.ok{background:rgba(74,222,128,.09);border:1px solid rgba(74,222,128,.25);color:#86efac}
-.warn{background:rgba(224,164,88,.09);border:1px solid rgba(224,164,88,.28);color:#eec38a}
-.bad{background:rgba(248,113,113,.09);border:1px solid rgba(248,113,113,.28);color:#fca5a5}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:7px;margin-top:10px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:8px 9px}
+.stat .k{font-size:8px;letter-spacing:.1em;color:var(--faint);font-weight:600}
+.stat .v{font-size:17px;font-weight:700;margin:3px 0 1px;font-variant-numeric:tabular-nums;line-height:1.1}
+.stat .h{font-size:9px;color:var(--faint)}
+.blue{color:var(--blue)}.green{color:var(--green)}.red{color:var(--red)}.amber{color:var(--accent)}
+.bars{margin-top:10px}
+.brow{margin-bottom:7px}
+.bhead{display:flex;justify-content:space-between;font-size:10.5px;color:var(--dim);margin-bottom:3px}
+.bhead .r{font-variant-numeric:tabular-nums}
+.track{height:4px;background:var(--chip);border-radius:3px;overflow:hidden}
+.fill{height:100%;border-radius:3px;width:0;transition:width .35s ease}
+.banner{margin-top:9px;border-radius:9px;padding:9px 11px;font-size:11.5px;line-height:1.45}
+.ok{background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.28);color:var(--green)}
+.warn{background:rgba(224,164,88,.1);border:1px solid rgba(224,164,88,.3);color:var(--accent)}
+.bad{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:var(--red)}
 .hide{display:none}
+@media (max-height:560px){
+  .sub{display:none}.sec{margin:7px 0 5px}
+  .stat .v{font-size:15px}.stat .h{display:none}
+  button{margin-top:8px;padding:7px}
+  .banner{padding:7px 9px;font-size:11px}
+}
 </style>
 </head>
 <body>
-<h1>Risk Management</h1>
-<div class="sub">Daily loss limit and trade budget</div>
-<div class="panel">
-  <div class="tabs">
-    <div class="tab on" id="tabN">Normal Trader</div>
-    <div class="tab" id="tabP">Prop Firm</div>
-  </div>
+<div class="hd"><h1>Risk Management</h1><span class="sub">Daily loss limit and trade budget</span></div>
 
-  <div class="sec">SETUP - FILL ONCE</div>
-  <div class="fields">
-    <div><label>Risk Per Trade</label><div class="inwrap"><input id="riskPct" type="number" step="0.1" value="1"><span class="unit">%</span></div></div>
-    <div><label>Your Daily Loss Limit</label><div class="inwrap"><input id="dailyPct" type="number" step="0.1" value="2"><span class="unit">%</span></div></div>
-    <div class="propOnly hide"><label>Firm Daily Limit</label><div class="inwrap"><input id="firmPct" type="number" step="0.1" value="5"><span class="unit">%</span></div></div>
-    <div class="propOnly hide"><label>Firm Max Drawdown</label><div class="inwrap"><input id="maxddPct" type="number" step="0.1" value="10"><span class="unit">%</span></div></div>
-    <div class="propOnly hide"><label>Profit Target</label><div class="inwrap"><input id="targetPct" type="number" step="0.1" value="8"><span class="unit">%</span></div></div>
-    <div class="propOnly hide"><label>Starting Balance</label><div class="inwrap"><input id="startBal" type="number" step="100" value="100000"><span class="unit">$</span></div></div>
-  </div>
-
-  <div class="sec">RIGHT NOW - FROM YOUR PLATFORM</div>
-  <div class="fields">
-    <div><label>Current Equity</label><div class="inwrap"><input id="equity" type="number" step="100" value="100000"><span class="unit">$</span></div></div>
-    <div><label>Lost Today</label><div class="inwrap"><input id="lost" type="number" step="10" value="0"><span class="unit">$</span></div></div>
-  </div>
-
-  <button id="calc">Calculate</button>
-
-  <div class="cards">
-    <div class="stat"><div class="k">MAX TRADES TODAY</div><div class="v blue" id="maxT">0</div><div class="h" id="maxTh"></div></div>
-    <div class="stat"><div class="k">TRADES REMAINING</div><div class="v green" id="remT">0</div><div class="h">at your size</div></div>
-    <div class="stat"><div class="k">DAILY LIMIT</div><div class="v red" id="dLim">$0</div><div class="h" id="dLimh"></div></div>
-    <div class="stat"><div class="k">ROOM LEFT TODAY</div><div class="v amber" id="room">$0</div><div class="h">can still lose</div></div>
-    <div class="stat propOnly hide"><div class="k">ACCOUNT FAILS BELOW</div><div class="v red" id="fails">$0</div><div class="h">from your starting balance</div></div>
-    <div class="stat propOnly hide"><div class="k">BUFFER TO FAILURE</div><div class="v amber" id="buf">$0</div><div class="h" id="bufh"></div></div>
-  </div>
-
-  <div class="bars">
-    <div class="brow"><div class="bhead"><span>Your daily limit used</span><span class="r" id="p1t">0%</span></div><div class="track"><div class="fill" id="p1" style="background:#e0a458"></div></div></div>
-    <div class="brow propOnly hide"><div class="bhead"><span>Firm hard limit used</span><span class="r" id="p2t">0%</span></div><div class="track"><div class="fill" id="p2" style="background:#f87171"></div></div></div>
-    <div class="brow propOnly hide"><div class="bhead"><span>Drawdown used</span><span class="r" id="p3t">0%</span></div><div class="track"><div class="fill" id="p3" style="background:#c084fc"></div></div></div>
-    <div class="brow propOnly hide"><div class="bhead"><span>Profit target</span><span class="r" id="p4t">0%</span></div><div class="track"><div class="fill" id="p4" style="background:#4ade80"></div></div></div>
-  </div>
-
-  <div class="banner ok" id="verdict"><span id="vIcon">OK</span><span id="vText">Fill in your numbers.</span></div>
+<div class="tabs">
+  <div class="tab on" id="tabN">Normal Trader</div>
+  <div class="tab" id="tabP">Prop Firm</div>
 </div>
+
+<div class="sec">SETUP - FILL ONCE</div>
+<div class="fields">
+  <div><label>Risk Per Trade</label><div class="inwrap"><input id="riskPct" type="number" step="0.1" value="1"><span class="unit">%</span></div></div>
+  <div><label>Your Daily Limit</label><div class="inwrap"><input id="dailyPct" type="number" step="0.1" value="2"><span class="unit">%</span></div></div>
+  <div class="propOnly hide"><label>Firm Daily Limit</label><div class="inwrap"><input id="firmPct" type="number" step="0.1" value="5"><span class="unit">%</span></div></div>
+  <div class="propOnly hide"><label>Firm Max Drawdown</label><div class="inwrap"><input id="maxddPct" type="number" step="0.1" value="10"><span class="unit">%</span></div></div>
+  <div class="propOnly hide"><label>Profit Target</label><div class="inwrap"><input id="targetPct" type="number" step="0.1" value="8"><span class="unit">%</span></div></div>
+  <div class="propOnly hide"><label>Starting Balance</label><div class="inwrap"><input id="startBal" type="number" step="100" value="100000"><span class="unit">$</span></div></div>
+</div>
+
+<div class="sec">RIGHT NOW - FROM YOUR PLATFORM</div>
+<div class="fields">
+  <div><label>Current Equity</label><div class="inwrap"><input id="equity" type="number" step="100" value="100000"><span class="unit">$</span></div></div>
+  <div><label>Lost Today</label><div class="inwrap"><input id="lost" type="number" step="10" value="0"><span class="unit">$</span></div></div>
+</div>
+
+<button id="calc">Calculate</button>
+
+<div class="cards">
+  <div class="stat"><div class="k">MAX TRADES</div><div class="v blue" id="maxT">0</div><div class="h" id="maxTh"></div></div>
+  <div class="stat"><div class="k">REMAINING</div><div class="v green" id="remT">0</div><div class="h">at your size</div></div>
+  <div class="stat"><div class="k">DAILY LIMIT</div><div class="v red" id="dLim">$0</div><div class="h" id="dLimh"></div></div>
+  <div class="stat"><div class="k">ROOM LEFT</div><div class="v amber" id="room">$0</div><div class="h">can still lose</div></div>
+  <div class="stat propOnly hide"><div class="k">FAILS BELOW</div><div class="v red" id="fails">$0</div><div class="h">hard floor</div></div>
+  <div class="stat propOnly hide"><div class="k">BUFFER</div><div class="v amber" id="buf">$0</div><div class="h" id="bufh"></div></div>
+</div>
+
+<div class="bars">
+  <div class="brow"><div class="bhead"><span>Your daily limit used</span><span class="r" id="p1t">0%</span></div><div class="track"><div class="fill" id="p1" style="background:#e0a458"></div></div></div>
+  <div class="brow propOnly hide"><div class="bhead"><span>Firm hard limit used</span><span class="r" id="p2t">0%</span></div><div class="track"><div class="fill" id="p2" style="background:#f87171"></div></div></div>
+  <div class="brow propOnly hide"><div class="bhead"><span>Drawdown used</span><span class="r" id="p3t">0%</span></div><div class="track"><div class="fill" id="p3" style="background:#c084fc"></div></div></div>
+  <div class="brow propOnly hide"><div class="bhead"><span>Profit target</span><span class="r" id="p4t">0%</span></div><div class="track"><div class="fill" id="p4" style="background:#4ade80"></div></div></div>
+</div>
+
+<div class="banner ok" id="verdict"><span id="vText">Fill in your numbers.</span></div>
 
 <script>
 var prop=false;
@@ -105,8 +122,7 @@ function setProp(on){
   calc();
 }
 function bar(id,pct){
-  var p=Math.max(0,Math.min(100,pct));
-  $(id).style.width=p+"%";
+  $(id).style.width=Math.max(0,Math.min(100,pct))+"%";
   $(id+"t").textContent=Math.round(pct)+"%";
 }
 function calc(){
@@ -121,7 +137,7 @@ function calc(){
   $("maxTh").textContent = money(riskDollar)+" per trade";
   $("remT").textContent = riskDollar>0?Math.max(0,Math.floor(room/riskDollar)):0;
   $("dLim").textContent = money(limit);
-  $("dLimh").textContent = prop&&firmLimit<myLimit?"firm rule - "+num("firmPct")+"%":"your rule - "+dailyPct+"%";
+  $("dLimh").textContent = prop&&firmLimit<myLimit?"firm rule":"your rule";
   $("room").textContent = money(room);
   bar("p1", myLimit>0?lost/myLimit*100:0);
 
@@ -134,19 +150,19 @@ function calc(){
     var targetDollar=start*tgt/100;
     $("fails").textContent=money(failsBelow);
     $("buf").textContent=money(buffer);
-    $("bufh").textContent=riskDollar>0?(buffer/riskDollar).toFixed(1)+" trades at your size":"";
+    $("bufh").textContent=riskDollar>0?(buffer/riskDollar).toFixed(1)+" trades":"";
     bar("p2", firmLimit>0?lost/firmLimit*100:0);
     bar("p3", Math.max(0,ddUsed));
     bar("p4", targetDollar>0?Math.max(0,profit/targetDollar*100):0);
   }
 
-  var v=$("verdict"), t=$("vText"), ic=$("vIcon");
-  if(eq<=0||riskPct<=0||dailyPct<=0){v.className="banner warn";ic.textContent="!";t.textContent="Fill in equity, risk per trade and your daily loss limit.";return}
+  var v=$("verdict"), t=$("vText");
+  if(eq<=0||riskPct<=0||dailyPct<=0){v.className="banner warn";t.textContent="Fill in equity, risk per trade and your daily loss limit.";return}
   if(prop && eq<=num("startBal")-num("startBal")*num("maxddPct")/100){
-    v.className="banner bad";ic.textContent="X";t.textContent="Account is below the firm's failure level. Stop trading and check your dashboard.";return}
-  if(room<=0){v.className="banner bad";ic.textContent="X";t.textContent="Daily limit reached. Close the platform. The next trade is not a trade, it is a decision to break your own rule.";return}
-  if(room<riskDollar){v.className="banner warn";ic.textContent="!";t.textContent="Not enough room for a full-size trade. "+Math.round(lost/limit*100)+"% of your daily limit is used - stop here.";return}
-  v.className="banner ok";ic.textContent="OK";
+    v.className="banner bad";t.textContent="Below the firm's failure level. Stop trading and check your dashboard.";return}
+  if(room<=0){v.className="banner bad";t.textContent="Daily limit reached. Close the platform. The next trade is not a trade, it is a decision to break your own rule.";return}
+  if(room<riskDollar){v.className="banner warn";t.textContent="No room for a full-size trade. "+Math.round(lost/limit*100)+"% of your daily limit is used - stop here.";return}
+  v.className="banner ok";
   t.textContent="Within your risk rules."+(prop&&firmLimit<myLimit?" Your own limit is the binding one today.":"");
 }
 $("tabN").onclick=function(){setProp(false)};

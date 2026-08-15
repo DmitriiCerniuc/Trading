@@ -5,74 +5,94 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Position Size</title>
 <style>
+:root{
+  --fg:#ededed;--dim:#9a9a9a;--faint:#6f6f6f;
+  --panel:rgba(255,255,255,.04);--line:rgba(255,255,255,.09);
+  --input:rgba(255,255,255,.055);--chip:rgba(255,255,255,.07);
+  --accent:#e0a458;--blue:#60a5fa;--green:#4ade80;--red:#f87171;
+  --btnfg:#191308;
+}
+@media (prefers-color-scheme:light){
+  :root{--fg:#1f1f1f;--dim:#5a5a5a;--faint:#7d7d7d;
+    --panel:rgba(0,0,0,.03);--line:rgba(0,0,0,.1);--input:rgba(0,0,0,.045);--chip:rgba(0,0,0,.06);
+    --accent:#b8791f;--blue:#2563eb;--green:#15803d;--red:#dc2626}
+}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#0d0d0d;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;padding:16px}
-h1{font-size:20px;font-weight:700;letter-spacing:-.02em}
-.sub{font-size:12px;color:#7a7a7a;margin:3px 0 16px}
-.panel{background:#141414;border:1px solid #242424;border-radius:14px;padding:14px}
-.sec{font-size:9.5px;letter-spacing:.13em;color:#6a6a6a;margin:2px 0 8px;font-weight:600}
-.sec.mt{margin-top:16px}
-.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
-label{display:block;font-size:11px;color:#9a9a9a;margin-bottom:5px}
+html,body{background:transparent}
+body{color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;padding:2px}
+.hd{display:flex;align-items:baseline;gap:8px;margin-bottom:9px;flex-wrap:wrap}
+h1{font-size:15px;font-weight:700;letter-spacing:-.01em}
+.sub{font-size:10.5px;color:var(--faint)}
+.sec{font-size:8.5px;letter-spacing:.14em;color:var(--faint);margin:9px 0 6px;font-weight:600}
+.sec:first-of-type{margin-top:0}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:7px}
+label{display:block;font-size:10px;color:var(--dim);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .inwrap{position:relative}
-input,select{width:100%;background:#1b1b1b;border:1px solid #2c2c2c;border-radius:9px;padding:10px 30px 10px 11px;color:#fff;font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;outline:none;appearance:none}
-select{padding-right:11px}
-input:focus,select:focus{border-color:#e0a458}
-.unit{position:absolute;right:11px;top:50%;transform:translateY(-50%);color:#6a6a6a;font-size:12px}
-.pipnote{font-size:10.5px;color:#6a6a6a;margin-top:7px;line-height:1.5}
-.pipnote b{color:#e0a458;font-weight:600}
-button{width:100%;margin-top:14px;background:#e0a458;color:#191308;border:0;border-radius:10px;padding:12px;font-size:14px;font-weight:700;cursor:pointer}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:14px}
-.stat{background:#181818;border:1px solid #242424;border-radius:11px;padding:12px}
-.stat .k{font-size:9.5px;letter-spacing:.1em;color:#6a6a6a;font-weight:600}
-.stat .v{font-size:22px;font-weight:700;margin:5px 0 2px;font-variant-numeric:tabular-nums}
-.stat .h{font-size:10.5px;color:#6a6a6a}
-.blue{color:#60a5fa}.green{color:#4ade80}.red{color:#f87171}.amber{color:#e0a458}
-.brow{margin-top:14px}
-.bhead{display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:5px}
-.track{height:5px;background:#232323;border-radius:4px;overflow:hidden}
-.fill{height:100%;border-radius:4px;width:0;transition:width .35s ease}
-.banner{margin-top:14px;border-radius:11px;padding:12px 14px;font-size:12.5px;line-height:1.5}
-.ok{background:rgba(74,222,128,.09);border:1px solid rgba(74,222,128,.25);color:#86efac}
-.warn{background:rgba(224,164,88,.09);border:1px solid rgba(224,164,88,.28);color:#eec38a}
-.bad{background:rgba(248,113,113,.09);border:1px solid rgba(248,113,113,.28);color:#fca5a5}
+input,select{width:100%;background:var(--input);border:1px solid var(--line);border-radius:7px;padding:7px 24px 7px 9px;color:var(--fg);font-size:13.5px;font-weight:600;font-variant-numeric:tabular-nums;outline:none;appearance:none}
+select{padding-right:9px}
+input:focus,select:focus{border-color:var(--accent)}
+option{background:#1b1b1b;color:#ededed}
+.unit{position:absolute;right:8px;top:50%;transform:translateY(-50%);color:var(--faint);font-size:11px}
+.pipnote{font-size:9.5px;color:var(--faint);margin-top:5px;line-height:1.45}
+.pipnote b{color:var(--accent);font-weight:600}
+button{width:100%;margin-top:10px;background:var(--accent);color:var(--btnfg);border:0;border-radius:8px;padding:9px;font-size:12.5px;font-weight:700;cursor:pointer}
+button:active{opacity:.85}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:7px;margin-top:10px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:8px 9px}
+.stat .k{font-size:8px;letter-spacing:.1em;color:var(--faint);font-weight:600}
+.stat .v{font-size:17px;font-weight:700;margin:3px 0 1px;font-variant-numeric:tabular-nums;line-height:1.1}
+.stat .h{font-size:9px;color:var(--faint)}
+.blue{color:var(--blue)}.green{color:var(--green)}.red{color:var(--red)}.amber{color:var(--accent)}
+.brow{margin-top:10px}
+.bhead{display:flex;justify-content:space-between;font-size:10.5px;color:var(--dim);margin-bottom:3px}
+.track{height:4px;background:var(--chip);border-radius:3px;overflow:hidden}
+.fill{height:100%;border-radius:3px;width:0;transition:width .35s ease}
+.banner{margin-top:9px;border-radius:9px;padding:9px 11px;font-size:11.5px;line-height:1.45}
+.ok{background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.28);color:var(--green)}
+.warn{background:rgba(224,164,88,.1);border:1px solid rgba(224,164,88,.3);color:var(--accent)}
+.bad{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:var(--red)}
+@media (max-height:520px){
+  .sub,.stat .h{display:none}
+  .sec{margin:7px 0 5px}
+  .stat .v{font-size:15px}
+  button{margin-top:8px;padding:7px}
+  .banner{padding:7px 9px;font-size:11px}
+}
 </style>
 </head>
 <body>
-<h1>Position Size</h1>
-<div class="sub">Lot size and risk calculator</div>
-<div class="panel">
-  <div class="sec">INSTRUMENT</div>
-  <div class="fields">
-    <div><label>Select instrument</label><select id="inst"></select></div>
-    <div><label>Pip / point value per 1.00 lot</label><div class="inwrap"><input id="pip" type="number" step="0.01" value="10"><span class="unit">$</span></div></div>
-  </div>
-  <div class="pipnote" id="pipnote"></div>
+<div class="hd"><h1>Position Size</h1><span class="sub">Lot size and risk calculator</span></div>
 
-  <div class="sec mt">ACCOUNT AND RISK</div>
-  <div class="fields">
-    <div><label>Account Balance</label><div class="inwrap"><input id="bal" type="number" step="100" value="100000"><span class="unit">$</span></div></div>
-    <div><label>Risk Per Trade</label><div class="inwrap"><input id="risk" type="number" step="0.1" value="0.5"><span class="unit">%</span></div></div>
-    <div><label>Stop Loss distance</label><div class="inwrap"><input id="sl" type="number" step="1" value="20"><span class="unit">pips</span></div></div>
-    <div><label>RR Ratio</label><div class="inwrap"><input id="rr" type="number" step="0.1" value="2"><span class="unit">R</span></div></div>
-  </div>
-
-  <button id="calc">Calculate</button>
-
-  <div class="cards">
-    <div class="stat"><div class="k">POSITION SIZE</div><div class="v blue" id="lots">0.00</div><div class="h" id="lotsh">standard lots</div></div>
-    <div class="stat"><div class="k">MINI LOTS</div><div class="v green" id="mini">0.0</div><div class="h">same size, in 0.1 units</div></div>
-    <div class="stat"><div class="k">RISK AT THIS SIZE</div><div class="v red" id="riskD">$0</div><div class="h" id="riskDh"></div></div>
-    <div class="stat"><div class="k">POTENTIAL PROFIT</div><div class="v amber" id="prof">$0</div><div class="h" id="profh"></div></div>
-  </div>
-
-  <div class="brow">
-    <div class="bhead"><span>Risk Level</span><span id="lvl">-</span></div>
-    <div class="track"><div class="fill" id="lvlbar" style="background:#4ade80"></div></div>
-  </div>
-
-  <div class="banner ok" id="banner">Fill in your numbers.</div>
+<div class="sec">INSTRUMENT</div>
+<div class="fields">
+  <div><label>Select instrument</label><select id="inst"></select></div>
+  <div><label>Pip / point value per lot</label><div class="inwrap"><input id="pip" type="number" step="0.01" value="10"><span class="unit">$</span></div></div>
 </div>
+<div class="pipnote" id="pipnote"></div>
+
+<div class="sec">ACCOUNT AND RISK</div>
+<div class="fields">
+  <div><label>Account Balance</label><div class="inwrap"><input id="bal" type="number" step="100" value="100000"><span class="unit">$</span></div></div>
+  <div><label>Risk Per Trade</label><div class="inwrap"><input id="risk" type="number" step="0.1" value="0.5"><span class="unit">%</span></div></div>
+  <div><label>Stop Loss distance</label><div class="inwrap"><input id="sl" type="number" step="1" value="20"><span class="unit">p</span></div></div>
+  <div><label>RR Ratio</label><div class="inwrap"><input id="rr" type="number" step="0.1" value="2"><span class="unit">R</span></div></div>
+</div>
+
+<button id="calc">Calculate</button>
+
+<div class="cards">
+  <div class="stat"><div class="k">POSITION SIZE</div><div class="v blue" id="lots">0.00</div><div class="h" id="lotsh">standard lots</div></div>
+  <div class="stat"><div class="k">MINI LOTS</div><div class="v green" id="mini">0.0</div><div class="h">in 0.1 units</div></div>
+  <div class="stat"><div class="k">RISK AT SIZE</div><div class="v red" id="riskD">$0</div><div class="h" id="riskDh"></div></div>
+  <div class="stat"><div class="k">POTENTIAL PROFIT</div><div class="v amber" id="prof">$0</div><div class="h" id="profh"></div></div>
+</div>
+
+<div class="brow">
+  <div class="bhead"><span>Risk Level</span><span id="lvl">-</span></div>
+  <div class="track"><div class="fill" id="lvlbar" style="background:#4ade80"></div></div>
+</div>
+
+<div class="banner ok" id="banner">Fill in your numbers.</div>
 
 <script>
 var INSTRUMENTS=[
@@ -85,10 +105,10 @@ var INSTRUMENTS=[
  {n:"USD/CAD",v:7.3,note:"APPROXIMATE. Pip value moves with the USD/CAD rate. Check your platform before sizing."},
  {n:"XAU/USD (Gold)",v:10,note:"Assumes 1.00 lot = 100 oz and a pip of $0.10. Some brokers quote gold differently."},
  {n:"XAG/USD (Silver)",v:50,note:"Assumes 1.00 lot = 5000 oz and a pip of $0.01. Verify with your broker."},
- {n:"US30",v:1,note:"Assumes $1 per index point per contract. Enter your stop in points, not pips."},
- {n:"NAS100",v:1,note:"Assumes $1 per index point per contract. Enter your stop in points, not pips."},
- {n:"SPX500",v:1,note:"Assumes $1 per index point per contract. Enter your stop in points, not pips."},
- {n:"GER40",v:1,note:"Assumes $1 per index point per contract. Enter your stop in points, not pips."},
+ {n:"US30",v:1,note:"Assumes $1 per index point per contract. Enter the stop in points."},
+ {n:"NAS100",v:1,note:"Assumes $1 per index point per contract. Enter the stop in points."},
+ {n:"SPX500",v:1,note:"Assumes $1 per index point per contract. Enter the stop in points."},
+ {n:"GER40",v:1,note:"Assumes $1 per index point per contract. Enter the stop in points."},
  {n:"Custom",v:10,note:"Enter the pip or point value your broker shows for one full lot."}
 ];
 function $(id){return document.getElementById(id)}
@@ -115,10 +135,10 @@ function calc(){
   var actual=lots*sl*pip;
   var profit=actual*rr;
   $("lots").textContent=lots.toFixed(2);
-  $("lotsh").textContent="standard lots - "+money(pip)+" per pip";
+  $("lotsh").textContent=money(pip)+" per pip";
   $("mini").textContent=(lots*10).toFixed(1);
   $("riskD").textContent=money(actual);
-  $("riskDh").textContent=bal>0?(actual/bal*100).toFixed(2)+"% of "+money(bal):"";
+  $("riskDh").textContent=bal>0?(actual/bal*100).toFixed(2)+"% of balance":"";
   $("prof").textContent=money(profit);
   $("profh").textContent="at 1:"+rr+" RR";
   var lvl,color,pct;
@@ -129,8 +149,8 @@ function calc(){
   $("lvlbar").style.background=color;
   $("lvlbar").style.width=Math.max(4,Math.min(100,pct))+"%";
   var b=$("banner");
-  if(lots<=0){b.className="banner bad";b.textContent="Size comes out to zero. Your stop is too wide for this risk budget, or the pip value is wrong. Do not round up - skip the trade or move to a lower-value instrument.";}
-  else if(risk>2){b.className="banner warn";b.textContent="Risking "+risk+"% per trade. On a prop account three losses in a row can end the challenge. Size is correct for the number you entered, but the number is aggressive.";}
+  if(lots<=0){b.className="banner bad";b.textContent="Size comes out to zero. Your stop is too wide for this risk budget, or the pip value is wrong. Do not round up - skip the trade.";}
+  else if(risk>2){b.className="banner warn";b.textContent="Risking "+risk+"% per trade. On a prop account three losses in a row can end the challenge.";}
   else{b.className="banner ok";b.textContent="Size is within your risk rule. Place the stop where your analysis says, not where the lot size feels comfortable.";}
 }
 $("inst").addEventListener("change",pickInstrument);
