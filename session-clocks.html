@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Session Clocks</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0d0d0d;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;padding:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
+.card{background:#161616;border:1px solid #262626;border-radius:12px;padding:14px 16px;position:relative;overflow:hidden}
+.card.open{border-color:#2f6b43}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px}
+.name{font-size:11.5px;letter-spacing:.13em;color:#c9c9c9;font-weight:600}
+.badge{font-size:9.5px;letter-spacing:.09em;padding:3px 8px;border-radius:20px;background:#232323;color:#8a8a8a;display:flex;align-items:center;gap:5px;white-space:nowrap}
+.badge.open{background:rgba(74,222,128,.12);color:#4ade80}
+.dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+.time{font-size:27px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.bot{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:10.5px;color:#7a7a7a;gap:8px}
+.eta{color:#e0a458;white-space:nowrap}
+.eta.weekend{color:#6f6f6f}
+.bar{position:absolute;left:0;bottom:0;height:2px;background:#4ade80;width:0;transition:width 1s linear}
+.note{margin-top:12px;font-size:10.5px;color:#5c5c5c;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="grid" id="grid"></div>
+<div class="note">Forex hours. Each card shows local exchange time; daylight saving is handled automatically. The market is closed from Friday 17:00 New York until Sunday 17:00 New York.</div>
+<script>
+var SESSIONS=[
+ {name:"SYDNEY",tz:"Australia/Sydney",label:"Australia / Sydney",open:7,close:16},
+ {name:"TOKYO",tz:"Asia/Tokyo",label:"Asia / Tokyo",open:9,close:18},
+ {name:"LONDON",tz:"Europe/London",label:"Europe / London",open:8,close:16},
+ {name:"NEW YORK",tz:"America/New_York",label:"America / New York",open:8,close:17}
+];
+var WD={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6};
+function parts(d,tz){
+  var p=new Intl.DateTimeFormat("en-US",{timeZone:tz,hour12:false,weekday:"short",hour:"2-digit",minute:"2-digit",second:"2-digit"}).formatToParts(d);
+  function g(t){for(var i=0;i<p.length;i++){if(p[i].type===t)return p[i].value}return "0"}
+  var h=parseInt(g("hour"),10); if(h===24)h=0;
+  return {h:h,m:parseInt(g("minute"),10),s:parseInt(g("second"),10),wd:WD[g("weekday")]};
+}
+function pad(n){return String(n).length<2?"0"+n:String(n)}
+function dur(sec){var h=Math.floor(sec/3600),m=Math.floor(sec%3600/60);return h>0?h+"h "+m+"m":m+"m"}
+var html="";
+for(var i=0;i<SESSIONS.length;i++){
+  html+='<div class="card" id="c'+i+'">'
+    +'<div class="top"><div class="name">'+SESSIONS[i].name+'</div>'
+    +'<div class="badge" id="b'+i+'"><span class="dot"></span><span id="bt'+i+'">CLOSED</span></div></div>'
+    +'<div class="time" id="t'+i+'">--:--:--</div>'
+    +'<div class="bot"><span>'+SESSIONS[i].label+'</span><span class="eta" id="e'+i+'"></span></div>'
+    +'<div class="bar" id="p'+i+'"></div></div>';
+}
+document.getElementById("grid").innerHTML=html;
+function tick(){
+  var now=new Date();
+  var ny=parts(now,"America/New_York");
+  var nySec=ny.h*3600+ny.m*60+ny.s;
+  var weekend = ny.wd===6 || (ny.wd===0 && nySec<17*3600) || (ny.wd===5 && nySec>=17*3600);
+  for(var i=0;i<SESSIONS.length;i++){
+    var s=SESSIONS[i], p=parts(now,s.tz);
+    var cur=p.h*3600+p.m*60+p.s, o=s.open*3600, c=s.close*3600;
+    document.getElementById("t"+i).textContent=pad(p.h)+":"+pad(p.m)+":"+pad(p.s);
+    var card=document.getElementById("c"+i),badge=document.getElementById("b"+i),
+        bt=document.getElementById("bt"+i),eta=document.getElementById("e"+i),bar=document.getElementById("p"+i);
+    var isOpen=!weekend && cur>=o && cur<c;
+    if(isOpen){card.className="card open";badge.className="badge open";bt.textContent="OPEN"}
+    else{card.className="card";badge.className="badge";bt.textContent="CLOSED"}
+    if(weekend){eta.className="eta weekend";eta.textContent="Weekend";bar.style.width="0"}
+    else if(isOpen){eta.className="eta";eta.textContent="Closes in "+dur(c-cur);bar.style.width=((cur-o)/(c-o)*100).toFixed(2)+"%"}
+    else{eta.className="eta";eta.textContent="Opens in "+dur(((o-cur)+86400)%86400);bar.style.width="0"}
+  }
+}
+tick();setInterval(tick,1000);
+</script>
+</body>
+</html>
