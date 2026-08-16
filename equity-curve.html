@@ -18,7 +18,8 @@
     --accent:#b8791f;--blue:#2563eb;--green:#15803d;--red:#dc2626}
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{background:transparent}
+html,body{background:transparent;height:100%;overflow:hidden}
+#fit{transform-origin:top left;width:100%}
 body{color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;padding:2px}
 .hd{display:flex;align-items:baseline;gap:8px;margin-bottom:8px;flex-wrap:wrap}
 h1{font-size:15px;font-weight:700;letter-spacing:-.01em}
@@ -47,6 +48,7 @@ canvas{width:100%;height:170px;display:block;margin-top:9px}
 </style>
 </head>
 <body>
+<div id="fit">
 <div class="hd"><h1>Equity Curve</h1><span class="sub">Cumulative equity and drawdown</span></div>
 <div class="hint">Open Trade Log, switch to the Copy for Equity Curve view, copy the Profit/Loss column and paste below. Oldest first, one per line. Losses keep the minus sign.</div>
 
@@ -176,10 +178,24 @@ function run(){
   $("msg").textContent=m;
 }
 $("draw").onclick=run;
+window.redrawCurve=run;
 $("data").addEventListener("input",run);
 $("start").addEventListener("input",run);
 window.addEventListener("resize",run);
 run();
+</script>
+</div>
+<script>
+(function(){var f=document.getElementById("fit"),k=1;
+function fit(){var W=document.documentElement.clientWidth,H=document.documentElement.clientHeight;
+for(var i=0;i<5;i++){f.style.width=(W/k)+"px";f.style.transform="none";
+var need=f.scrollHeight,nk=Math.max(.55,Math.min(1,H/need));
+if(Math.abs(nk-k)<.005)break;k=nk}
+f.style.width=(W/k)+"px";f.style.transform="scale("+k+")";
+if(window.redrawCurve)window.redrawCurve()}
+window.addEventListener("resize",fit);
+if(window.ResizeObserver){new ResizeObserver(fit).observe(f)}
+fit();setTimeout(fit,80);setTimeout(fit,400)})();
 </script>
 </body>
 </html>

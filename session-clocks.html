@@ -16,7 +16,8 @@
     --accent:#b8791f;--open:#1a8a45}
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{background:transparent}
+html,body{background:transparent;height:100%;overflow:hidden}
+#fit{transform-origin:top left;width:100%}
 body{color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;padding:2px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:8px}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;position:relative;overflow:hidden}
@@ -36,6 +37,7 @@ body{color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Int
 </style>
 </head>
 <body>
+<div id="fit">
 <div class="grid" id="grid"></div>
 <div class="note">Local exchange time, daylight saving handled automatically. Market closed Friday 17:00 New York to Sunday 17:00 New York.</div>
 <script>
@@ -84,6 +86,18 @@ function tick(){
   }
 }
 tick();setInterval(tick,1000);
+</script>
+</div>
+<script>
+(function(){var f=document.getElementById("fit"),k=1;
+function fit(){var W=document.documentElement.clientWidth,H=document.documentElement.clientHeight;
+for(var i=0;i<5;i++){f.style.width=(W/k)+"px";f.style.transform="none";
+var need=f.scrollHeight,nk=Math.max(.55,Math.min(1,H/need));
+if(Math.abs(nk-k)<.005)break;k=nk}
+f.style.width=(W/k)+"px";f.style.transform="scale("+k+")"}
+window.addEventListener("resize",fit);
+if(window.ResizeObserver){new ResizeObserver(fit).observe(f)}
+fit();setTimeout(fit,80);setTimeout(fit,400)})();
 </script>
 </body>
 </html>
